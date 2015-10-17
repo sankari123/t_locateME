@@ -38,14 +38,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
         //clear the screen, draw population
        var img=new Image();
     img.src='logo.png';
-var box={
-      source:img,
-      x:x1,
-      y:y1
-    };
-//make sure the image doesnt load before the script
-window.onload=function(){
-  ctx.drawImage(img,box.x,box.y);
+  ctx.drawImage(img,x1,y1);
 }
 }
    // Clear the canvas context using the canvas width and height
