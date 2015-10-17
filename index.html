@@ -19,6 +19,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
 	function drawDot(ctx,x1,y1){
          var img=new Image(); 
         img.src="logo.png";
+        ctx.clearRect(0,0,canvas.width, canvas.height);
         ctx.drawImage(img,x1,y1);
 }
 
@@ -102,9 +103,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
         canvas = document.getElementById("sketchpad");
         
           ctx = canvas.getContext('2d');
-             var img=new Image();
-    		img.src="logo.png";
-    	     ctx.drawImage(img,0,0);
+           
               if (ctx) {
             // React to mouse events on the canvas, and mouseup on the entire document
             canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
@@ -116,9 +115,15 @@ document.addEventListener("deviceready",onDeviceReady,false);
             canvas.addEventListener('touchmove', sketchpad_touchMove, false);
         }
     }
+    function loadImage()
+    {
+    	 canvas = document.getElementById("sketchpad");
     
-  
-  
+          ctx = canvas.getContext('2d');
+    var img=new Image();
+    		img.src="logo.png";
+    	     ctx.drawImage(img,0,0);
+    }
    
 </script>
 
@@ -172,6 +177,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
         <div class="rightside">
             <canvas id="sketchpad" height="300" width="400">
             </canvas>
+             <input type="load" value="load" id="clearbutton" onclick="loadImage();">
         </div>
     </div>
 </body>
