@@ -36,7 +36,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
     // Parameters are: A canvas context, the x position, the y position, the size of the dot
 	function drawDot(ctx,x1,y1){
         //clear the screen, draw population
-       img.src='logo.png';
+       img.src="logo.png";
 	ctx.drawImage(img,x1,y1);
 }
 
@@ -105,11 +105,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
         event.preventDefault();
     }
 
-    // Get the touch position relative to the top-left of the canvas
-    // When we get the raw values of pageX and pageY below, they take into account the scrolling on the page
-    // but not the position relative to our target div. We'll adjust them using "target.offsetLeft" and
-    // "target.offsetTop" to get the correct values in relation to the top left of the canvas.
-    function getTouchPos(e) {
+     function getTouchPos(e) {
         if (!e)
             var e = event;
 
@@ -122,9 +118,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
         }
     }
 
-
-    // Set-up the canvas and add our event handlers after the page has loaded
-    function init() {
+ function init() {
         // Get the specific canvas element from the HTML document
         canvas = document.getElementById("sketchpad");
         // If the browser supports the canvas tag, get the 2d drawing context for this canvas
@@ -132,7 +126,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
              var img=new Image();
     		img.src="logo.png";
 		 ctx.drawImage(img,0,0);
-        
+        alert("in");
         // Check that we have a valid context to draw on/with before adding event handlers
         if (ctx) {
             // React to mouse events on the canvas, and mouseup on the entire document
@@ -188,7 +182,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
 </style>
 </head>
 
-<body onload="init()">
+<body onload="init();">
     <div id="sketchpadapp">
         <div class="leftside">
             
