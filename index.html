@@ -38,21 +38,7 @@ window.onload=function(){
   ctx.drawImage(img,box.x,box.y);
 }
 }
-   function init(){
-        //clear the screen, draw population
-       var img=new Image();
-    img.src='logo.png';
-var box={
-      source:img,
-      x:Math.floor((Math.random()*256)+1),
-      y:Math.floor((Math.random()*256)+1)
-    };
-//make sure the image doesnt load before the script
-window.onload=function(){
-  ctx.drawImage(img,box.x,box.y);
-}
-}
-    // Clear the canvas context using the canvas width and height
+   // Clear the canvas context using the canvas width and height
     function clearCanvas(canvas,ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -143,6 +129,16 @@ window.onload=function(){
         // If the browser supports the canvas tag, get the 2d drawing context for this canvas
         if (canvas.getContext)
             ctx = canvas.getContext('2d');
+             var img=new Image();
+    		img.src='logo.png';
+		var box={
+      		source:img,
+		 x:Math.floor((Math.random()*256)+1),
+      		y:Math.floor((Math.random()*256)+1)
+    		};
+		//make sure the image doesnt load before the script
+		window.onload=function(){
+  		ctx.drawImage(img,box.x,box.y);}
 
         // Check that we have a valid context to draw on/with before adding event handlers
         if (ctx) {
@@ -202,9 +198,7 @@ window.onload=function(){
 <body onload="init()">
     <div id="sketchpadapp">
         <div class="leftside">
-             Touchscreen and mouse support HTML5 canvas sketchpad.<br/><br/>
-             Draw something by tapping or dragging.<br/><br/>
-             Works on iOS, Android and desktop/laptop touchscreens using Chrome/Firefox/Safari.<br/><br/>
+            
              <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);">
         </div>
         <div class="rightside">
