@@ -36,11 +36,10 @@ document.addEventListener("deviceready",onDeviceReady,false);
     // Parameters are: A canvas context, the x position, the y position, the size of the dot
 	function drawDot(ctx,x1,y1){
         //clear the screen, draw population
-       var img=new Image();
-    img.src='logo.png';
-  ctx.drawImage(img,x1,y1);
+       img.src='logo.png';
+	ctx.drawImage(img,x1,y1);
 }
-}
+
    // Clear the canvas context using the canvas width and height
     function clearCanvas(canvas,ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -132,8 +131,7 @@ document.addEventListener("deviceready",onDeviceReady,false);
           ctx = canvas.getContext('2d');
              var img=new Image();
     		img.src="logo.png";
-		window.onload=function(){
-  		ctx.drawImage(img,0,0);}
+		 ctx.drawImage(img,0,0);
         
         // Check that we have a valid context to draw on/with before adding event handlers
         if (ctx) {
