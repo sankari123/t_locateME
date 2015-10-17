@@ -1,8 +1,12 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.phonegap.helloworld" version="1.0.0">
-  <name>T_LocateME</name>
-  <description>T_LOCATE</description>
-  <author href="http://phonegap.com" email="support@phonegap.com">PhoneGap Team</author>
+  <name>meMO</name>
+  <description>meMO</description>
+  <author href="http://phonegap.com" email="support@phonegap.com">Sivasankari</author>
   <content src="index.html"/>
+  <feature name="Notification">
+        <param name="android-package" value="org.apache.cordova.dialogs.Notification" />
+  </feature>
+  <preference name="phonegap-version" value="cli-5.2.0" /> 
   <preference name="permissions" value="none"/>
   <preference name="orientation" value="default"/>
   <preference name="target-device" value="universal"/>
@@ -16,27 +20,25 @@
   <preference name="show-splash-screen-spinner" value="true"/>
   <preference name="auto-hide-splash-screen" value="true"/>
   <preference name="disable-cursor" value="false"/>
-  <preference name="android-minSdkVersion" value="14"/>
+  <preference name="android-build-tool" value="ant" />
   <preference name="android-installLocation" value="auto"/>
   
-  <gap:plugin name="org.apache.cordova.battery-status" version="0.2.11" />
-  <gap:plugin name="org.apache.cordova.camera" version="0.3.2" />
-  <gap:plugin name="org.apache.cordova.console" version="0.2.11" />
-  <gap:plugin name="org.apache.cordova.contacts" version="0.2.13" />
-  <gap:plugin name="org.apache.cordova.device" version="0.2.12" />
-  <gap:plugin name="org.apache.cordova.device-motion" version="0.2.10" />
-  <gap:plugin name="org.apache.cordova.device-orientation" version="0.3.9" />
-  <gap:plugin name="org.apache.cordova.dialogs" version="0.2.10" />
-  <gap:plugin name="org.apache.cordova.file" version="1.3.1" />
-  <gap:plugin name="org.apache.cordova.file-transfer" version="0.4.6" />
-  <gap:plugin name="org.apache.cordova.geolocation" version="0.3.10" />
-  <gap:plugin name="org.apache.cordova.globalization" version="0.3.1" />
-  <gap:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" />
-  <gap:plugin name="org.apache.cordova.media" version="0.2.13" />
-  <gap:plugin name="org.apache.cordova.media-capture" version="0.3.3" />
-  <gap:plugin name="org.apache.cordova.network-information" version="0.2.12" />
-  <gap:plugin name="org.apache.cordova.splashscreen" version="0.3.4" />
-  <gap:plugin name="org.apache.cordova.vibration" version="0.3.11" />
+  <gap:plugin name="org.apache.cordova.battery-status"/>
+  <gap:plugin name="org.apache.cordova.camera"/>
+  <gap:plugin name="org.apache.cordova.media-capture"/>
+  <gap:plugin name="org.apache.cordova.console"/>
+  <gap:plugin name="org.apache.cordova.contacts"/>
+  <gap:plugin name="org.apache.cordova.device"/>
+  <gap:plugin name="org.apache.cordova.device-motion"/>
+  <gap:plugin name="org.apache.cordova.device-orientation"/>
+  <gap:plugin name="org.apache.cordova.dialogs"/>
+  <gap:plugin name="org.apache.cordova.file"/>
+  <gap:plugin name="org.apache.cordova.media"/>
+  <gap:plugin name="org.apache.cordova.network-information"/>
+  <gap:plugin name="org.apache.cordova.splashscreen"/>
+  <gap:plugin name="org.apache.cordova.vibration"/>
+  <gap:plugin name="org.apache.cordova.geolocation"  />
+  <gap:plugin name="nl.x-services.plugins.socialsharing" source="plugins.cordova.io" />
 
   <icon src="icon.png"/>
   <icon src="www/res/icon/android/icon-36-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
@@ -64,7 +66,7 @@
   <gap:splash src="www/res/screen/ios/screen-ipad-landscape.png" gap:platform="ios" width="1024" height="768"/>
   <gap:splash src="www/res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone"/>
   <access origin="*"/>
-  <plugin name="cordova-plugin-whitelist" version="1"/>
+  <plugin name="cordova-plugin-whitelist" />
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
@@ -78,4 +80,21 @@
     <allow-intent href="itms:*"/>
     <allow-intent href="itms-apps:*"/>
   </platform>
+  <feature name="Camera">
+    <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+ </feature>
+ <feature name="http://api.phonegap.com/1.0/media"/>
+ <feature name="http://api.phonegap.com/1.0/file"/>
+ <feature name="File">
+      <param name="android-package" value="org.apache.cordova.FileUtils" />
+ </feature>
+ <feature name="Media">
+    <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
+</feature>
+<feature name="Media">
+    <param name="ios-package" value="CDVSound" />
+</feature>
+ <feature name="FileTransfer">
+      <param name="android-package" value="org.apache.cordova.FileTransfer" />
+ </feature>
 </widget>
