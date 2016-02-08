@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <title>Locate ME</title>
+	
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8"></script>
+   
+	<script>
+document.addEventListener("deviceready",onDeviceReady,false);
+    function onDeviceReady() {
+    	screen.orientation.lock('portrait');
+    }
+   function transcribe(words) {
+  document.getElementById("speech").value = words;
+  document.getElementById("mic").value = "";
+  document.getElementById("speech").focus();
+}
+	
+</script>
+</head>
+<BODY>
+<textarea cols="50" id="speech"></textarea>
+<input id="mic" onwebkitspeechchange="transcribe(this.value)" x-webkit-speech>
+ </BODY>
+</HTML>
