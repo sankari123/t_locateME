@@ -1,23 +1,111 @@
-<!doctype html>
-<html>
-    <head>
-        <title>Speech Recogniztion API</title>
-        <script type="text/javascript">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  
+  <style>
+  body {
+  background-color: #38c;
+}
 
-            function transcribe(text)
-            {
-                console.log(text);
-            }
+h1 {
+  text-align: center;
+  color: white;
+  text-shadow: 0 2px 2px #148;
+}
 
+h1 a {
+  color: #9ef;
+  text-decoration: none;
+  font-style: italic;
+}
 
-            if (document.createElement("input").webkitSpeech === undefined) 
-            {
-                alert("Speech input is not supported in your browser.");
-            }
-        </script>
-    </head>
-    <body>
-        Click on microphone button on input field and then talk.
-        <input type="text" placeholder="Speak Out" x-webkit-speech="x-webkit-speech" onwebkitspeechchange="transcribe(this.value)" />
-    </body>
-</html>
+h1 a:hover {
+  color: #fff;
+}
+
+#speech-synthesis-demo {
+  width: 650px;
+  margin: 50px auto 0;
+}
+
+#speech-synthesis-demo td:nth-child(1){
+  color: white;
+  text-shadow: 0 1px 0 #888;
+}
+
+#voicelist, #speech-input, #speak-btn{
+  width: 100%;
+  display: block;
+  margin: 5px;
+  padding: 5px;
+  border: 0;
+  box-sizing: border-box;
+}
+</style>
+ </HEAD>
+
+ <BODY>
+  <h1>HTML5 Speech Synthesis</h1>
+<table id="speech-synthesis-demo">
+  <tbody colspan="2">
+  <tr>
+    <td>Voice:</td>
+    <td>
+      <select id="voicelist">
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Text:</td>
+    <td>
+      <textarea rows=6 id="speech-input"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <button id="speak-btn">Speak!</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<h1 class="author">Demo by <a href="http://creative-punch.net" target="_blank">Creative Punch</h1>
+ </BODY>
+</HTML>
+<script>
+  $(function(){
+  speechSynthesis.onvoiceschanged = function() {
+    var $voicelist = $('#voicelist');
+        
+    speechSynthesis.getVoices().forEach(function(voice, index) {
+      console.log(index, voice.name, voice.default ? '(default)' :'');
+      var $option = $('<option>')
+      .val(index)
+      .html(voice.name + (voice.default ? ' (default)' :''));
+      
+      $voicelist.append($option);
+    });
+  }
+  
+  $('#speak-btn').click(function(){
+    var text = $('#speech-input').val();
+    var msg = new SpeechSynthesisUtterance();
+    var voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[$('#voicelist').val()];
+    msg.text = text;
+
+    msg.onend = function(e) {
+      console.log('Finished in ' + event.elapsedTime + ' seconds.');
+    };
+
+    speechSynthesis.speak(msg);
+  })
+});
+
+  </script>
