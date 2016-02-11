@@ -2,12 +2,42 @@
 <HTML>
  <HEAD>
   <TITLE> New Document </TITLE>
-  <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
   <META NAME="Generator" CONTENT="EditPlus">
   <META NAME="Author" CONTENT="">
   <META NAME="Keywords" CONTENT="">
   <META NAME="Description" CONTENT="">
+   <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+  <script>
+  $(function(){
+  speechSynthesis.onvoiceschanged = function() {
+    var $voicelist = $('#voicelist');
+        
+    speechSynthesis.getVoices().forEach(function(voice, index) {
+      console.log(index, voice.name, voice.default ? '(default)' :'');
+      var $option = $('<option>')
+      .val(index)
+      .html(voice.name + (voice.default ? ' (default)' :''));
+      
+      $voicelist.append($option);
+    });
+  }
   
+  $('#speak-btn').click(function(){
+    var text = $('#speech-input').val();
+    var msg = new SpeechSynthesisUtterance();
+    var voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[$('#voicelist').val()];
+    msg.text = text;
+
+    msg.onend = function(e) {
+      console.log('Finished in ' + event.elapsedTime + ' seconds.');
+    };
+
+    speechSynthesis.speak(msg);
+  })
+});
+
+  </script>
   <style>
   body {
   background-color: #38c;
@@ -79,34 +109,3 @@ h1 a:hover {
 <h1 class="author">Demo by <a href="http://creative-punch.net" target="_blank">Creative Punch</h1>
  </BODY>
 </HTML>
-<script>
-  $(function(){
-  speechSynthesis.onvoiceschanged = function() {
-    var $voicelist = $('#voicelist');
-        
-    speechSynthesis.getVoices().forEach(function(voice, index) {
-      console.log(index, voice.name, voice.default ? '(default)' :'');
-      var $option = $('<option>')
-      .val(index)
-      .html(voice.name + (voice.default ? ' (default)' :''));
-      
-      $voicelist.append($option);
-    });
-  }
-  
-  $('#speak-btn').click(function(){
-    var text = $('#speech-input').val();
-    var msg = new SpeechSynthesisUtterance();
-    var voices = window.speechSynthesis.getVoices();
-    msg.voice = voices[$('#voicelist').val()];
-    msg.text = text;
-
-    msg.onend = function(e) {
-      console.log('Finished in ' + event.elapsedTime + ' seconds.');
-    };
-
-    speechSynthesis.speak(msg);
-  })
-});
-
-  </script>
