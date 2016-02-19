@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>heyME</title>
+   <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script src="jquery.min.js"></script>
+<script src="jquery.Jcrop.min.js"></script>
+
+<link rel="stylesheet" href="jquery.Jcrop.min.css" type="text/css" />
+
+<script type="text/javascript">
+  
+  var filName;
+  var jcrop_api;
+ var c_width
+ var c_height;
+ var imgData1,imgData2,imgData3;
+ var x_co,y_co;
+  var canvas,ctx;
+ 
+ function setCrop()
+    {
+        
+ jcrop_api = $.Jcrop('#target', { aspectRatio: 1,
+              minSize: 50, onChange: showCoords,    onSelect: showCoords, bgColor: '#CCC' });
+ }
+ 
+ 
+function showCoords(c)
+  {
+      // variables can be accessed here as
+   //  alert(c.x, c.y, c.x2, c.y2, c.w, c.h);
+     $('#w').val(c.w);
+    $('#h').val(c.h);
+     $('#x_coor').val(c.x);
+    $('#y_coor').val(c.y);
+  };
+  var img_arr = new Array(5);
+ var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value
+   var rotating = true; 
+    document.addEventListener("deviceready",onDeviceReady,false);
+     function onDeviceReady() {
+       	pictureSource=navigator.camera.PictureSourceType;
+        destinationType=navigator.camera.DestinationType;
+  }
+    
+       function start()
+      {
+      	 	document.getElementById("tbl").style.width=window.innerHeight;
+        	 document.getElementById("target").style.visibility = 'hidden';
+        	 document.getElementById("div_main1").style.visibility = 'hidden';
+        	 document.getElementById("div_main2").style.visibility = 'hidden';
+        	 document.getElementById("div_main3").style.visibility = 'hidden';
+        	 
+	  }
+       function onFail(message) {
+  //    alert('Failed because: ' + message);
+    }
+ 
+    
+    function m_getPhoto(source) {
+   		document.getElementById("target").style.visibility = 'hidden';
+        	 document.getElementById("div_main1").style.visibility = 'hidden';
+        	 document.getElementById("div_main2").style.visibility = 'hidden';
+        	 document.getElementById("div_main3").style.visibility = 'hidden';
+        	 document.getElementById("loadImgDiv").style.visibility = 'hidden';
+        	 
+      navigator.camera.getPicture(m_onPhotoURISuccess, onFail, { quality: 50,destinationType: destinationType.FILE_URI,sourceType: source });
+    }
+   
+    
+    function m_onPhotoURISuccess(imageURI1) {
+    	var c = document.getElementById("can_model");
+	    var ctx = c.getContext('2d');
+	 	var img = new Image();
+		img.src = imageURI1;
+		document.getElementById("target").src=imageURI1;
+		document.getElementById("target").style.visibility = 'visible';
+		img.onload= drawImageScaled.bind(null, img, ctx);
+	    }
+function onPrompt(results)  {
+  if(results.buttonIndex==1)
+  {
+    setCrop();
+	}
+}
+   function drawImageScaled(img,ctx) {
+   	canvas = ctx.canvas ;
+ 	 
+ 	 canvas.height = window.innerHeight*0.8;
+  canvas.width = window.innerWidth*0.8;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(img,0,0,img.width,img.height);
+   imgData1=ctx.getImageData(0,0);
+ //  navigator.notification.prompt('Select the face part!', onPrompt,  'Face Dimensions',   ['Ok','Cancel'], ' ');
+   navigator.notification.confirm('Select the face part!',  onConfirm,  'Face Dimensions', ['OK','Cancel'] );
+  
+}
+function release()
+  {
+    	jcrop_api.destroy();
+  }
+   
+  
+   
+ function disp()
+ {
+	release();
+	alert("Select 3 photos only...");
+ 	c_width=document.getElementById("w").value;
+ 	c_height=document.getElementById("h").value;
+ 	x_co=document.getElementById('x_coor').value;
+        y_co=document.getElementById('y_coor').value;
+ 	document.getElementById("loadImgDiv").style.visibility = 'visible';
+    	document.getElementById("loadImgDiv").style.display = 'block';
+    	
+ 	document.getElementById('loadImgDiv').style.width=c_width;
+	document.getElementById('loadImgDiv').style.height=c_height;
+	
+	var img_r1 = document.getElementById('loadImgDiv1').firstChild;
+	var img_r2 = document.getElementById('loadImgDiv2').firstChild;
+	var img_r3 = document.getElementById('loadImgDiv3').firstChild;
+	
+ 	document.getElementById("target").style.visibility = 'hidden';
+    	document.getElementById("target").style.display = 'none';
+    	window.imagePicker.getPictures(
+                function(results) {
+                    for (var i = 0; i < 3; i++) {
+                    			img_arr[i]= results[i];
+                    	       		img_r1.src = results[0]; 
+                    	       		img_r1.onload = function() {
+                    			img_r1.height = c_height;
+					img_r1.width = c_width; }
+					img_r2.src = results[1]; 
+                    			img_r2.onload = function() {
+    					img_r2.height = c_height;
+					img_r2.width = c_width; }
+             		
+             				img_r3.src = results[2]; 
+                    			img_r3.onload = function() {
+    					img_r3.height = c_height;
+					img_r3.width = c_width; }
+             		
+		window.resolveLocalFileSystemURI(results[i], function(fileEntry){	
+        	fileEntry.file(function(fileObj) { document.getElementById('fnam').value=document.getElementById('fnam').value+"#"+fileEntry.name;
+            }); 
+    }, function (error) {            alert('Error: ' + error);        });
+                    }
+                  
+                }, function (error) {                    alert('Error: ' + error);                }
+            );
+       setTimeout(function(){ navigator.notification.alert('Select a Photo.. ', alertDismissed, 'meMO', 'OK'); },5);
+     }
+ 
+ function alertDismissed()
+ {
+ 	//do something
+ }
+function overlap()
+ {
+		alert("in");
+		document.getElementById("div_main1").style.display = 'none';
+		document.getElementById("can_model").style.visibility = 'hidden';
+		document.getElementById("div_main2").style.display = 'none';
+		document.getElementById("can_me").style.visibility = 'hidden';
+		document.getElementById("div_main3").style.display = 'block';
+		document.getElementById("can_final").style.visibility = 'visible';
+	       canvas_final = document.getElementById("can_final");
+               context_final = canvas_final.getContext("2d");
+               context_final.clearRect(0,0,canvas_final.width, canvas_final.height);
+            	context_final.putImageData(imgData1,0,0);
+             	context_final.putImageData(tmp1,x_co,y_co);
+}
+function overlay_action()
+{
+	    canvas = document.getElementById('can_final');
+            ctx = canvas.getContext('2d');
+            ctx.clearRect(0,0,canvas.height, canvas.height);
+       	    ctx.putImageData(imgData1,0,0);
+            ctx.putImageData(tmp1,x_co,y_co);
+       	    
+           if (ctx) {
+            canvas.addEventListener('mousedown', theCanvas_mouseDown, false);
+            canvas.addEventListener('mousemove', theCanvas_mouseMove, false);
+            window.addEventListener('mouseup', theCanvas_mouseUp, false);
+            
+            canvas.addEventListener('touchstart', theCanvas_touchStart, false);
+         canvas.addEventListener('touchend', theCanvas_touchEnd, false);
+            canvas.addEventListener('touchmove', theCanvas_touchMove, false);
+        }
+}
+  
+function drawLine(ctx,x1,y1) {
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+     ctx.putImageData(imgData1,0,0);
+      ctx.putImageData(tmp1,x1,y1-50);
+     
+    } 
+    
+    function theCanvas_mouseDown() {
+        mouseDown=1;
+        drawLine(ctx,mouseX,mouseY);
+    }
+    
+    function theCanvas_mouseUp() {
+        mouseDown=0;
+        
+        lastX=-1;
+        lastY=-1;
+    }
+    
+    function theCanvas_mouseMove(e) { 
+    
+        getMousePos(e);
+    
+        if (mouseDown==1) {
+            drawLine(ctx,mouseX,mouseY);
+        }
+    }
+    
+    function getMousePos(e) {
+        if (!e)
+            var e = event;
+        if (e.offsetX) {
+            mouseX = e.offsetX;
+            mouseY = e.offsetY;
+        }
+        else if (e.layerX) {
+            mouseX = e.layerX;
+            mouseY = e.layerY;
+        }
+     }
+    
+    function theCanvas_touchStart() {
+    
+        getTouchPos();
+        drawLine(ctx,touchX,touchY);
+    
+        event.preventDefault();
+    }
+    function theCanvas_touchEnd() {
+        lastX=-1;
+        lastY=-1;
+    
+    }
+    
+    function theCanvas_touchMove(e) { 
+    
+        getTouchPos(e);
+    
+        drawLine(ctx,touchX,touchY); 
+    
+        event.preventDefault();
+    }
+    function getTouchPos(e) {
+        if (!e)
+            var e = event;
+        if(e.touches) {
+            if (e.touches.length == 1) { // Only deal with one finger
+                var touch = e.touches[0]; // Get the information for finger #1
+                touchX=touch.pageX-touch.target.offsetLeft;
+                touchY=touch.pageY-touch.target.offsetTop;
+            }
+        }
+    }
+function testDiv1()
+{
+	alert("selected");
+//	alert(img_arr[0]);
+    //	document.getElementById("div_main2").style.display = 'block';
+    //	document.getElementById("div_main2").style.visibility = 'visible';
+    	c = document.getElementById("can_me");
+	ctx = c.getContext('2d');
+	var img_1 = document.createElement('img');
+	img_1.src = img_arr[0];
+	img_1.x=0;
+    	img_1.y=0;
+    
+    //	alert("c_width "+c_width+" c height "+c_height);
+    //	alert("x  "+x_co+" y  "+y_co);
+    //	ctx.drawImage(img_1,0,0,c_width,m_height);
+    //	ctx.drawImage(img_1,0,0,img_1.width,img_1.height);
+        ctx.drawImage(img_1,0,0,img_1.width,img_1.height,0,0,c_width,c_height);
+        tmp1=ctx.getImageData(0,0);
+       // hideDiv();
+       	overlap();
+ }
+ function testDiv2()
+{
+//	alert("selected");
+//	alert(img_arr[0]);
+    	document.getElementById("div_main2").style.display = 'block';
+    	document.getElementById("div_main2").style.visibility = 'visible';
+    	c = document.getElementById("can_me");
+	ctx = c.getContext('2d');
+	var img_1 = document.createElement('img');
+	img_1.src = img_arr[1];
+	img_1.x=0;
+    	img_1.y=0;
+    		
+    //	context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+    	ctx.drawImage(img_1,0,0,img_1.width,img_1.height,0,0,c_width,c_height);
+        tmp1=ctx.getImageData(0,0);
+        //hideDiv();
+       	overlap();
+ }
+ function testDiv3()
+{
+//	alert("selected");
+//	alert(img_arr[0]);
+    	document.getElementById("div_main2").style.display = 'block';
+    	document.getElementById("div_main2").style.visibility = 'visible';
+    	c = document.getElementById("can_me");
+	ctx = c.getContext('2d');
+	var img_1 = document.createElement('img');
+	img_1.src = img_arr[2];
+	img_1.x=0;
+    	img_1.y=0;
+    	
+    	ctx.drawImage(img_1,0,0,img_1.width,img_1.height,0,0,c_width,c_height);
+        tmp1=ctx.getImageData(0,0); // hideDiv();
+       	overlap();
+ }
+ 
+ function saveCanvas()
+{
+if (ctx)
+//{
+    window.canvas2ImagePlugin.saveImageDataToLibrary(
+        function(msg){
+            console.log(msg);
+        },
+        function(err){
+            console.log(err);
+        },
+        document.getElementById("canvas_final")  );
+ navigator.notification.alert('Image saved successfully.To view the image, open <Pictures> folder in your device. ',  alertDismissed,   'DigiGraph',   'OK'      );
+  // }     
+}
+ function tstOp() {
+//var img1 = document.getElementById('img1');
+//var img2 = document.getElementById('img2');
+var canvas = document.getElementById("canvas_final");
+var context = canvas.getContext("2d");
+//var width = img1.width;
+//var height = img1.height;
+canvas.width = width;
+canvas.height = height;
+var pixels = 4 * width * height;
+//context.drawImage(img1, 0, 0);
+//var image1 = context.getImageData(0, 0, width, height);
+var imageData1 = imgData1.data;
+//context.drawImage(img2, 0, 0);
+//var image2 = context.getImageData(0, 0, width, height);
+var imageData2 = tmp1.data;
+while (pixels--) {
+    imageData1[pixels] = imageData1[pixels] * 0.5 + imageData2[pixels] * 0.5;
+}
+image1.data = imageData1;
+context.putImageData(image1, 0, 0); };
+function seePreview()
+{
+        var x1 = $('#imgX1').val();
+        var y1 = $('#imgY1').val();
+        var width = $('#imgWidth').val();
+        var height = $('#imgHeight').val();
+        var canvas = $("#canvas")[0];
+        var context = canvas.getContext('2d');
+        var img = new Image();
+        img.onload = function () {
+            canvas.height = height;
+            canvas.width = width;
+            context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+            $('#imgCropped').val(canvas.toDataURL());
+        };
+        img.src = $('#target').attr("src");
+    
+}
+      </script>
+
+      <style type="text/css">
+        .jcrop-holder div
+        {
+          -webkit-border-radius: 50% !important;
+          -moz-border-radius: 50% !important;
+          border-radius: 50% !important;
+        }
+      
+  .cropImage{
+  visibility:hidden;
+  
+  border:1px solid black;
+  /*  top:-50px; left:-50px; position:absolute; margin:50% 0 0 50%;*/
+  }
+  .btncss
+	{
+	background:none;
+	border:none;
+	padding:0;
+	cursor:pointer;
+	font: 8pt arial;
+	font-family:Oswald, sans-serif; /*Oswald is available from http://www.google.com/webfonts/specimen/Oswald*/
+	color: #b32d5f;
+	}
+.divStyle11{
+   visibility:hidden;
+   position:fixed;
+   width: 75%;
+   text-align:center;
+  }
+  .divStyle2{
+   width: 75%;
+   height: 50px !important;
+  visibility:hidden;
+   overflow-x: scroll;
+   border-style: solid;
+   border-color: red;
+  }
+  .divStyle31{
+   width: 75%;
+   height:75%;
+   visibility:hidden;
+   position:fixed;
+   background:blue;
+   
+  }
+  .red {
+    width: auto !important;
+    height:50px !important;
+    background:white;
+}
+.blue {
+    width: auto !important;
+    height: 50px !important;
+    display:inline-block;
+    margin-right: 0px;
+    box-sizing: border-box;
+    padding: 0%;
+ /*   border-color:green;*/
+   /* background-color: rgba(255, 255, 255, 0.3);*/
+}
+.m_canvas1
+{
+position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    }
+    
+    .load_img_div
+    {
+    	height:75% !important;
+  	width:auto !important;
+  	border-style: solid;
+   	border-color: black;
+   	border:1px solid black;
+     }
+     .can11
+    {
+    	height:75% !important;
+  	width:auto !important;
+  	border-style: solid;
+   	border-color: black;
+   	border:1px solid black;
+     }
+        </style>
+  </head>
+  
+      
+        
+<body onload="start();">
+	
+      <div class="container">
+      	
+        <div>
+          <table id="tbl" cellspacing="0" cellpadding="0">
+               	<tr><td><input type="hidden" size="3" id='w'></td><td><input type="hidden" id='h' size="3" ></td><td><input type="hidden"  size="3" id='x_coor'></td><td><input type="hidden"  size="3" id='y_coor'></td></tr>
+         	 <tr><td><button onclick="m_getPhoto(pictureSource.PHOTOLIBRARY);">Load Make Over Photo</button></td>
+                 <td><button id='placeIt' onclick="disp();">Load Your Photos(Face)</button></td>
+         <td><button onclick="overlay_action();">Position</button></td>
+         <td><button onclick="seePreview();">Preview</button></td>
+         
+        </tr>
+       	</table>
+       	</div>
+       	<div id='loadImgDiv' class="red">
+         	
+    			<div id='loadImgDiv1' class="blue" onclick="testDiv1();"><img src="#"></div>
+    			<div id='loadImgDiv2' class="blue" onclick="testDiv2();"><img src="#"></div>
+    			<div id='loadImgDiv3' class="blue" onclick="testDiv3();"><img src="#"></div>	
+         	</div>
+               <div id="load_img_div" align="center"><img src="splash.png" class="cropImage" id="target" alt="jCrop Circle Area Example" /></div>
+            <div  id="div_main1"><canvas id="can_model" class="can1"></canvas></div>
+            <div  id="div_main2"><canvas id="can_me" style="border:2px solid black;"></canvas></div>
+            <div  id="div_main3"><canvas id="can_final" style="border:2px solid black;"></canvas></div>
+        
+                 </div>
+                 
+  </body>
+</html>
